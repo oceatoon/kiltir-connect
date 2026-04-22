@@ -6,6 +6,7 @@ import {
   MOCK_WALLET,
   MOCK_ORDERS_CONSUMER,
   STATUS_LABEL,
+  AVATAR_USER,
   type WalletEntry,
 } from "@/lib/mock-data";
 
@@ -147,8 +148,14 @@ function ProfilPage() {
       {/* Identity card */}
       <section className="px-6 md:px-12 py-12 border-b-2 border-foreground">
         <div className="grid md:grid-cols-[auto_1fr_auto] gap-0 border-2 border-foreground">
-          <div className="p-8 md:border-r-2 border-b-2 md:border-b-0 border-foreground bg-foreground text-background flex items-center justify-center">
-            <div className="display text-6xl">MB</div>
+          <div className="md:border-r-2 border-b-2 md:border-b-0 border-foreground bg-foreground overflow-hidden">
+            <img
+              src={AVATAR_USER}
+              alt={PROFILE.name}
+              width={512}
+              height={512}
+              className="w-full h-full object-cover md:w-48 md:h-full"
+            />
           </div>
           <div className="p-8 md:border-r-2 border-b-2 md:border-b-0 border-foreground">
             <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
