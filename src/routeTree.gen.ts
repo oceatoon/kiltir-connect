@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TransporteursRouteImport } from './routes/transporteurs'
 import { Route as RejoindreRouteImport } from './routes/rejoindre'
+import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ProducteursRouteImport } from './routes/producteurs'
 import { Route as ObservatoireRouteImport } from './routes/observatoire'
@@ -35,6 +36,11 @@ const TransporteursRoute = TransporteursRouteImport.update({
 const RejoindreRoute = RejoindreRouteImport.update({
   id: '/rejoindre',
   path: '/rejoindre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProduitsRoute = ProduitsRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
+  '/profil': typeof ProfilRoute
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
+  '/profil': typeof ProfilRoute
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
+  '/profil': typeof ProfilRoute
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/observatoire'
     | '/producteurs'
     | '/produits'
+    | '/profil'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/observatoire'
     | '/producteurs'
     | '/produits'
+    | '/profil'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/observatoire'
     | '/producteurs'
     | '/produits'
+    | '/profil'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   ObservatoireRoute: typeof ObservatoireRoute
   ProducteursRoute: typeof ProducteursRouteWithChildren
   ProduitsRoute: typeof ProduitsRouteWithChildren
+  ProfilRoute: typeof ProfilRoute
   RejoindreRoute: typeof RejoindreRoute
   TransporteursRoute: typeof TransporteursRoute
   WalletRoute: typeof WalletRoute
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       path: '/rejoindre'
       fullPath: '/rejoindre'
       preLoaderRoute: typeof RejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/produits': {
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   ObservatoireRoute: ObservatoireRoute,
   ProducteursRoute: ProducteursRouteWithChildren,
   ProduitsRoute: ProduitsRouteWithChildren,
+  ProfilRoute: ProfilRoute,
   RejoindreRoute: RejoindreRoute,
   TransporteursRoute: TransporteursRoute,
   WalletRoute: WalletRoute,
@@ -312,3 +333,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
