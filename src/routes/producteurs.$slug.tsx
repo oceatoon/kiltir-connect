@@ -1,9 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-import { PRODUCERS } from "@/lib/mock-data";
+import { PRODUCERS, type Producer } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/producteurs/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): Producer => {
     const producer = PRODUCERS.find((p) => p.slug === params.slug);
     if (!producer) throw notFound();
     return producer;
