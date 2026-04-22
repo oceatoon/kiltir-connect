@@ -24,7 +24,7 @@ const schema = z.object({
   closesOn: z.string().min(1, "Date requise"),
   pds: z.array(z.string()).min(1, "Au moins 1 PD"),
   description: z.string().trim().min(10, "Min. 10 caractères").max(500),
-  accept: z.literal(true, { errorMap: () => ({ message: "Engagement requis" }) }),
+  accept: z.literal(true, { error: "Engagement requis" }),
 });
 
 function NouveauProduitPage() {

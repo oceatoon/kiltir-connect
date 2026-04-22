@@ -53,7 +53,7 @@ function CommanderPage() {
     name: z.string().trim().min(2, "Nom requis").max(80),
     email: z.string().trim().email("Email invalide").max(200),
     notes: z.string().max(400).optional(),
-    accept: z.literal(true, { errorMap: () => ({ message: "Engagement requis" }) }),
+    accept: z.literal(true, { error: "Engagement requis" }),
   });
 
   const total = qty * product.price;
