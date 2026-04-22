@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/page-shell";
+import { PRODUCERS } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/producteurs")({
   head: () => ({
@@ -12,15 +13,6 @@ export const Route = createFileRoute("/producteurs")({
   }),
   component: ProducteursPage,
 });
-
-const PRODUCERS = [
-  { name: "Domaine de Plourin", zone: "Finistère Nord", products: ["Pommes", "Cidre", "Jus"], volume: "1.2t / mois" },
-  { name: "Ferme Kerouzy", zone: "Pays de Morlaix", products: ["Légumes bio", "Œufs"], volume: "800 kg / mois" },
-  { name: "Moulin de Kervern", zone: "Centre Bretagne", products: ["Farines", "Pains"], volume: "450 kg / mois" },
-  { name: "GAEC Ar Yaouank", zone: "Trégor", products: ["Œufs", "Poulets"], volume: "600 kg / mois" },
-  { name: "Conserverie Penn ar Bed", zone: "Iroise", products: ["Soupes", "Conserves"], volume: "320 kg / mois" },
-  { name: "Bergerie de Menez", zone: "Monts d'Arrée", products: ["Fromage", "Agneau"], volume: "210 kg / mois" },
-];
 
 function ProducteursPage() {
   return (
@@ -49,16 +41,18 @@ function ProducteursPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-2 border-foreground">
           {PRODUCERS.map((p, i) => (
-            <article
-              key={p.name}
-              className={`p-6 ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PRODUCERS.length - 3 ? "lg:border-b-2" : ""} ${i < PRODUCERS.length - 2 ? "border-b-2" : ""} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors group`}
+            <Link
+              key={p.slug}
+              to="/producteurs/$slug"
+              params={{ slug: p.slug }}
+              className={`block p-6 ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PRODUCERS.length - 3 ? "lg:border-b-2" : ""} ${i < PRODUCERS.length - 2 ? "border-b-2" : ""} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors group`}
             >
               <div className="font-mono text-[10px] uppercase tracking-widest opacity-70 group-hover:opacity-100">
                 {p.zone}
               </div>
               <h3 className="display text-2xl mt-2">{p.name}</h3>
               <div className="mt-4 flex flex-wrap gap-1">
-                {p.products.map((pr) => (
+                {p.categories.map((pr) => (
                   <span
                     key={pr}
                     className="border border-current px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest"
@@ -68,7 +62,7 @@ function ProducteursPage() {
                 ))}
               </div>
               <div className="mt-6 font-mono text-xs">{p.volume}</div>
-            </article>
+            </Link>
           ))}
         </div>
 
