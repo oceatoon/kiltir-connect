@@ -9,13 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TransporteursRouteImport } from './routes/transporteurs'
 import { Route as RejoindreRouteImport } from './routes/rejoindre'
 import { Route as ProducteursRouteImport } from './routes/producteurs'
 import { Route as ObservatoireRouteImport } from './routes/observatoire'
 import { Route as DistributionRouteImport } from './routes/distribution'
+import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProducteursSlugRouteImport } from './routes/producteurs.$slug'
 
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TransporteursRoute = TransporteursRouteImport.update({
   id: '/transporteurs',
   path: '/transporteurs',
@@ -41,75 +49,112 @@ const DistributionRoute = DistributionRouteImport.update({
   path: '/distribution',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommandesRoute = CommandesRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProducteursSlugRoute = ProducteursSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ProducteursRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
-  '/producteurs': typeof ProducteursRoute
+  '/producteurs': typeof ProducteursRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
+  '/wallet': typeof WalletRoute
+  '/producteurs/$slug': typeof ProducteursSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
-  '/producteurs': typeof ProducteursRoute
+  '/producteurs': typeof ProducteursRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
+  '/wallet': typeof WalletRoute
+  '/producteurs/$slug': typeof ProducteursSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
-  '/producteurs': typeof ProducteursRoute
+  '/producteurs': typeof ProducteursRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
+  '/wallet': typeof WalletRoute
+  '/producteurs/$slug': typeof ProducteursSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/commandes'
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
     | '/rejoindre'
     | '/transporteurs'
+    | '/wallet'
+    | '/producteurs/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/commandes'
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
     | '/rejoindre'
     | '/transporteurs'
+    | '/wallet'
+    | '/producteurs/$slug'
   id:
     | '__root__'
     | '/'
+    | '/commandes'
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
     | '/rejoindre'
     | '/transporteurs'
+    | '/wallet'
+    | '/producteurs/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CommandesRoute: typeof CommandesRoute
   DistributionRoute: typeof DistributionRoute
   ObservatoireRoute: typeof ObservatoireRoute
-  ProducteursRoute: typeof ProducteursRoute
+  ProducteursRoute: typeof ProducteursRouteWithChildren
   RejoindreRoute: typeof RejoindreRoute
   TransporteursRoute: typeof TransporteursRoute
+  WalletRoute: typeof WalletRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transporteurs': {
       id: '/transporteurs'
       path: '/transporteurs'
@@ -145,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DistributionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/commandes': {
+      id: '/commandes'
+      path: '/commandes'
+      fullPath: '/commandes'
+      preLoaderRoute: typeof CommandesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -152,16 +204,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/producteurs/$slug': {
+      id: '/producteurs/$slug'
+      path: '/$slug'
+      fullPath: '/producteurs/$slug'
+      preLoaderRoute: typeof ProducteursSlugRouteImport
+      parentRoute: typeof ProducteursRoute
+    }
   }
 }
 
+interface ProducteursRouteChildren {
+  ProducteursSlugRoute: typeof ProducteursSlugRoute
+}
+
+const ProducteursRouteChildren: ProducteursRouteChildren = {
+  ProducteursSlugRoute: ProducteursSlugRoute,
+}
+
+const ProducteursRouteWithChildren = ProducteursRoute._addFileChildren(
+  ProducteursRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CommandesRoute: CommandesRoute,
   DistributionRoute: DistributionRoute,
   ObservatoireRoute: ObservatoireRoute,
-  ProducteursRoute: ProducteursRoute,
+  ProducteursRoute: ProducteursRouteWithChildren,
   RejoindreRoute: RejoindreRoute,
   TransporteursRoute: TransporteursRoute,
+  WalletRoute: WalletRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
