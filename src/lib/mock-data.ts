@@ -66,6 +66,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "1.2 t / mois",
     categories: ["Boissons", "Maraîchage"],
+    image: producerPlourin,
   },
   {
     slug: "ferme-kerouzy",
@@ -79,6 +80,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "800 kg / mois",
     categories: ["Maraîchage", "Élevage"],
+    image: producerKerouzy,
   },
   {
     slug: "moulin-de-kervern",
@@ -92,6 +94,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "450 kg / mois",
     categories: ["Boulange"],
+    image: producerKervern,
   },
 ];
 
