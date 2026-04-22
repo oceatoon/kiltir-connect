@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
+import { CATALOG } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,10 +27,84 @@ function Home() {
       <Hero />
       <Manifesto />
       <HowItWorks />
+      <FreshDrops />
       <RolesGrid />
       <LiveStrip />
       <Cta />
     </PageShell>
+  );
+}
+
+function FreshDrops() {
+  const items = CATALOG.slice(0, 6);
+  return (
+    <section className="border-b-2 border-foreground">
+      <div className="px-6 md:px-12 pt-20 pb-10 flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <div className="font-mono text-xs uppercase tracking-[0.3em] text-signal mb-6">
+            ▍ Arrivages
+          </div>
+          <h2 className="display text-4xl md:text-6xl max-w-3xl">
+            Les produits<br />
+            <span className="text-signal">du moment.</span>
+          </h2>
+        </div>
+        <Link
+          to="/produits"
+          className="border-2 border-foreground px-6 py-3 font-mono text-xs uppercase tracking-widest hover:bg-signal hover:text-signal-foreground transition-colors"
+        >
+          Tout le catalogue →
+        </Link>
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-t-2 border-foreground">
+        {items.map((p, i) => {
+          const pct = Math.round((p.available / p.proposed) * 100);
+          const borderR = i % 3 !== 2 ? "lg:border-r-2" : "";
+          const borderRMd = i % 2 === 0 ? "md:border-r-2" : "";
+          const borderB = i < items.length - (items.length % 3 || 3) ? "lg:border-b-2" : "";
+          return (
+            <Link
+              key={p.id}
+              to="/commander/$id"
+              params={{ id: p.id }}
+              className={`group p-8 border-b-2 last:border-b-0 ${borderRMd} ${borderR} ${borderB} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">
+                  {p.category}
+                </div>
+                <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">
+                  Clôture {new Date(p.closesOn).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}
+                </div>
+              </div>
+              <h3 className="display text-3xl mt-4 leading-tight">{p.name}</h3>
+              <div className="mt-2 font-mono text-xs uppercase tracking-widest opacity-80">
+                {p.producerName}
+              </div>
+              <div className="mt-6 flex items-end justify-between">
+                <div className="display text-5xl">
+                  {p.price.toFixed(2).replace(".", ",")}
+                  <span className="text-lg ml-1">€/{p.unit}</span>
+                </div>
+                <div className="font-mono text-xs uppercase tracking-widest text-right">
+                  {p.available}<br />
+                  <span className="opacity-70">restants</span>
+                </div>
+              </div>
+              <div className="mt-6 h-2 border-2 border-foreground group-hover:border-signal-foreground">
+                <div
+                  className="h-full bg-foreground group-hover:bg-signal-foreground"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <div className="mt-6 font-mono text-xs uppercase tracking-widest opacity-80">
+                → Commander
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
