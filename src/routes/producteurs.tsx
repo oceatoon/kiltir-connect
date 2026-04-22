@@ -45,23 +45,35 @@ function ProducteursPage() {
               key={p.slug}
               to="/producteurs/$slug"
               params={{ slug: p.slug }}
-              className={`block p-6 ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PRODUCERS.length - 3 ? "lg:border-b-2" : ""} ${i < PRODUCERS.length - 2 ? "border-b-2" : ""} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors group`}
+              className={`block ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PRODUCERS.length - 3 ? "lg:border-b-2" : ""} ${i < PRODUCERS.length - 2 ? "border-b-2" : ""} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors group`}
             >
-              <div className="font-mono text-[10px] uppercase tracking-widest opacity-70 group-hover:opacity-100">
-                {p.zone}
+              <div className="aspect-[4/3] overflow-hidden border-b-2 border-foreground bg-card">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  loading="lazy"
+                  width={1024}
+                  height={768}
+                  className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
+                />
               </div>
-              <h3 className="display text-2xl mt-2">{p.name}</h3>
-              <div className="mt-4 flex flex-wrap gap-1">
-                {p.categories.map((pr) => (
-                  <span
-                    key={pr}
-                    className="border border-current px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest"
-                  >
-                    {pr}
-                  </span>
-                ))}
+              <div className="p-6">
+                <div className="font-mono text-[10px] uppercase tracking-widest opacity-70 group-hover:opacity-100">
+                  {p.zone}
+                </div>
+                <h3 className="display text-2xl mt-2">{p.name}</h3>
+                <div className="mt-4 flex flex-wrap gap-1">
+                  {p.categories.map((pr) => (
+                    <span
+                      key={pr}
+                      className="border border-current px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest"
+                    >
+                      {pr}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 font-mono text-xs">{p.volume}</div>
               </div>
-              <div className="mt-6 font-mono text-xs">{p.volume}</div>
             </Link>
           ))}
         </div>
