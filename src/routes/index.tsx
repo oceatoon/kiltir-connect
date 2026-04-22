@@ -113,6 +113,7 @@ function FreshDrops() {
               <div className="mt-6 font-mono text-xs uppercase tracking-widest opacity-80">
                 → Commander
               </div>
+              </div>
             </Link>
           );
         })}
