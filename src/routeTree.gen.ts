@@ -12,12 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TransporteursRouteImport } from './routes/transporteurs'
 import { Route as RejoindreRouteImport } from './routes/rejoindre'
+import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ProducteursRouteImport } from './routes/producteurs'
 import { Route as ObservatoireRouteImport } from './routes/observatoire'
 import { Route as DistributionRouteImport } from './routes/distribution'
 import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProduitsNouveauRouteImport } from './routes/produits.nouveau'
 import { Route as ProducteursSlugRouteImport } from './routes/producteurs.$slug'
+import { Route as CommanderIdRouteImport } from './routes/commander.$id'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -32,6 +35,11 @@ const TransporteursRoute = TransporteursRouteImport.update({
 const RejoindreRoute = RejoindreRouteImport.update({
   id: '/rejoindre',
   path: '/rejoindre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsRoute = ProduitsRouteImport.update({
+  id: '/produits',
+  path: '/produits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProducteursRoute = ProducteursRouteImport.update({
@@ -59,10 +67,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProduitsNouveauRoute = ProduitsNouveauRouteImport.update({
+  id: '/nouveau',
+  path: '/nouveau',
+  getParentRoute: () => ProduitsRoute,
+} as any)
 const ProducteursSlugRoute = ProducteursSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => ProducteursRoute,
+} as any)
+const CommanderIdRoute = CommanderIdRouteImport.update({
+  id: '/commander/$id',
+  path: '/commander/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -71,10 +89,13 @@ export interface FileRoutesByFullPath {
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
+  '/produits': typeof ProduitsRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
+  '/commander/$id': typeof CommanderIdRoute
   '/producteurs/$slug': typeof ProducteursSlugRoute
+  '/produits/nouveau': typeof ProduitsNouveauRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -82,10 +103,13 @@ export interface FileRoutesByTo {
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
+  '/produits': typeof ProduitsRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
+  '/commander/$id': typeof CommanderIdRoute
   '/producteurs/$slug': typeof ProducteursSlugRoute
+  '/produits/nouveau': typeof ProduitsNouveauRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,10 +118,13 @@ export interface FileRoutesById {
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
   '/producteurs': typeof ProducteursRouteWithChildren
+  '/produits': typeof ProduitsRouteWithChildren
   '/rejoindre': typeof RejoindreRoute
   '/transporteurs': typeof TransporteursRoute
   '/wallet': typeof WalletRoute
+  '/commander/$id': typeof CommanderIdRoute
   '/producteurs/$slug': typeof ProducteursSlugRoute
+  '/produits/nouveau': typeof ProduitsNouveauRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,10 +134,13 @@ export interface FileRouteTypes {
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
+    | '/produits'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
+    | '/commander/$id'
     | '/producteurs/$slug'
+    | '/produits/nouveau'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -118,10 +148,13 @@ export interface FileRouteTypes {
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
+    | '/produits'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
+    | '/commander/$id'
     | '/producteurs/$slug'
+    | '/produits/nouveau'
   id:
     | '__root__'
     | '/'
@@ -129,10 +162,13 @@ export interface FileRouteTypes {
     | '/distribution'
     | '/observatoire'
     | '/producteurs'
+    | '/produits'
     | '/rejoindre'
     | '/transporteurs'
     | '/wallet'
+    | '/commander/$id'
     | '/producteurs/$slug'
+    | '/produits/nouveau'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -141,9 +177,11 @@ export interface RootRouteChildren {
   DistributionRoute: typeof DistributionRoute
   ObservatoireRoute: typeof ObservatoireRoute
   ProducteursRoute: typeof ProducteursRouteWithChildren
+  ProduitsRoute: typeof ProduitsRouteWithChildren
   RejoindreRoute: typeof RejoindreRoute
   TransporteursRoute: typeof TransporteursRoute
   WalletRoute: typeof WalletRoute
+  CommanderIdRoute: typeof CommanderIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -167,6 +205,13 @@ declare module '@tanstack/react-router' {
       path: '/rejoindre'
       fullPath: '/rejoindre'
       preLoaderRoute: typeof RejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits': {
+      id: '/produits'
+      path: '/produits'
+      fullPath: '/produits'
+      preLoaderRoute: typeof ProduitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/producteurs': {
@@ -204,12 +249,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/produits/nouveau': {
+      id: '/produits/nouveau'
+      path: '/nouveau'
+      fullPath: '/produits/nouveau'
+      preLoaderRoute: typeof ProduitsNouveauRouteImport
+      parentRoute: typeof ProduitsRoute
+    }
     '/producteurs/$slug': {
       id: '/producteurs/$slug'
       path: '/$slug'
       fullPath: '/producteurs/$slug'
       preLoaderRoute: typeof ProducteursSlugRouteImport
       parentRoute: typeof ProducteursRoute
+    }
+    '/commander/$id': {
+      id: '/commander/$id'
+      path: '/commander/$id'
+      fullPath: '/commander/$id'
+      preLoaderRoute: typeof CommanderIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -226,16 +285,39 @@ const ProducteursRouteWithChildren = ProducteursRoute._addFileChildren(
   ProducteursRouteChildren,
 )
 
+interface ProduitsRouteChildren {
+  ProduitsNouveauRoute: typeof ProduitsNouveauRoute
+}
+
+const ProduitsRouteChildren: ProduitsRouteChildren = {
+  ProduitsNouveauRoute: ProduitsNouveauRoute,
+}
+
+const ProduitsRouteWithChildren = ProduitsRoute._addFileChildren(
+  ProduitsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CommandesRoute: CommandesRoute,
   DistributionRoute: DistributionRoute,
   ObservatoireRoute: ObservatoireRoute,
   ProducteursRoute: ProducteursRouteWithChildren,
+  ProduitsRoute: ProduitsRouteWithChildren,
   RejoindreRoute: RejoindreRoute,
   TransporteursRoute: TransporteursRoute,
   WalletRoute: WalletRoute,
+  CommanderIdRoute: CommanderIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

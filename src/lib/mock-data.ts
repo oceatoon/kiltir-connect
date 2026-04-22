@@ -100,6 +100,39 @@ export const MOCK_WALLET: { balance: number; pending: number; entries: WalletEnt
   ],
 };
 
+export type CatalogProduct = {
+  id: string;
+  name: string;
+  producerSlug: string;
+  producerName: string;
+  category: string;
+  price: number;
+  unit: string;
+  available: number; // remaining units
+  proposed: number; // initially proposed
+  pds: string[];
+  closesOn: string; // promesse deadline
+};
+
+export const CATALOG: CatalogProduct[] = [
+  { id: "P-001", name: "Pommes Reinette", producerSlug: "domaine-de-plourin", producerName: "Domaine de Plourin", category: "Maraîchage", price: 2.4, unit: "kg", available: 180, proposed: 240, pds: ["PD Brest Centre", "PD Morlaix Halles"], closesOn: "2026-04-28" },
+  { id: "P-002", name: "Cidre brut 75cl", producerSlug: "domaine-de-plourin", producerName: "Domaine de Plourin", category: "Boissons", price: 4.1, unit: "btl", available: 320, proposed: 400, pds: ["PD Brest Centre", "PD Morlaix Halles"], closesOn: "2026-04-30" },
+  { id: "P-003", name: "Jus de pomme 1L", producerSlug: "domaine-de-plourin", producerName: "Domaine de Plourin", category: "Boissons", price: 3.2, unit: "L", available: 260, proposed: 300, pds: ["PD Brest Centre"], closesOn: "2026-04-30" },
+  { id: "P-004", name: "Panier légumes 5kg", producerSlug: "ferme-kerouzy", producerName: "Ferme Kerouzy", category: "Maraîchage", price: 18.0, unit: "panier", available: 40, proposed: 60, pds: ["PD Morlaix Halles", "PD Lannion Quai"], closesOn: "2026-04-26" },
+  { id: "P-005", name: "Œufs (par 6)", producerSlug: "ferme-kerouzy", producerName: "Ferme Kerouzy", category: "Élevage", price: 2.8, unit: "×6", available: 120, proposed: 150, pds: ["PD Morlaix Halles", "PD Lannion Quai"], closesOn: "2026-04-26" },
+  { id: "P-006", name: "Farine T80 1kg", producerSlug: "moulin-de-kervern", producerName: "Moulin de Kervern", category: "Boulange", price: 3.5, unit: "kg", available: 200, proposed: 250, pds: ["PD Carhaix Forum"], closesOn: "2026-05-02" },
+  { id: "P-007", name: "Pain campagne 800g", producerSlug: "moulin-de-kervern", producerName: "Moulin de Kervern", category: "Boulange", price: 5.2, unit: "pièce", available: 60, proposed: 80, pds: ["PD Carhaix Forum"], closesOn: "2026-04-25" },
+];
+
+export const ALL_PDS = [
+  "PD Brest Centre",
+  "PD Morlaix Halles",
+  "PD Lannion Quai",
+  "PD Carhaix Forum",
+];
+
+export const CATEGORIES = ["Maraîchage", "Élevage", "Boulange", "Boissons", "Transformés"];
+
 export const STATUS_LABEL: Record<OrderStatus, string> = {
   promesse: "Promesse",
   paiement: "Paiement",
