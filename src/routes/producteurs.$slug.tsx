@@ -41,7 +41,7 @@ export const Route = createFileRoute("/producteurs/$slug")({
 });
 
 function ProducerDetailPage() {
-  const p = Route.useLoaderData();
+  const p: Producer = Route.useLoaderData();
 
   return (
     <PageShell>
