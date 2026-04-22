@@ -110,6 +110,7 @@ function ProduitsPage() {
                 >
                   Faire ma promesse →
                 </Link>
+                </div>
               </div>
             );
           })}
