@@ -9,8 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TransporteursRouteImport } from './routes/transporteurs'
+import { Route as RejoindreRouteImport } from './routes/rejoindre'
+import { Route as ProducteursRouteImport } from './routes/producteurs'
+import { Route as ObservatoireRouteImport } from './routes/observatoire'
+import { Route as DistributionRouteImport } from './routes/distribution'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TransporteursRoute = TransporteursRouteImport.update({
+  id: '/transporteurs',
+  path: '/transporteurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RejoindreRoute = RejoindreRouteImport.update({
+  id: '/rejoindre',
+  path: '/rejoindre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProducteursRoute = ProducteursRouteImport.update({
+  id: '/producteurs',
+  path: '/producteurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObservatoireRoute = ObservatoireRouteImport.update({
+  id: '/observatoire',
+  path: '/observatoire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DistributionRoute = DistributionRouteImport.update({
+  id: '/distribution',
+  path: '/distribution',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +49,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/distribution': typeof DistributionRoute
+  '/observatoire': typeof ObservatoireRoute
+  '/producteurs': typeof ProducteursRoute
+  '/rejoindre': typeof RejoindreRoute
+  '/transporteurs': typeof TransporteursRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/distribution': typeof DistributionRoute
+  '/observatoire': typeof ObservatoireRoute
+  '/producteurs': typeof ProducteursRoute
+  '/rejoindre': typeof RejoindreRoute
+  '/transporteurs': typeof TransporteursRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/distribution': typeof DistributionRoute
+  '/observatoire': typeof ObservatoireRoute
+  '/producteurs': typeof ProducteursRoute
+  '/rejoindre': typeof RejoindreRoute
+  '/transporteurs': typeof TransporteursRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/distribution'
+    | '/observatoire'
+    | '/producteurs'
+    | '/rejoindre'
+    | '/transporteurs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/distribution'
+    | '/observatoire'
+    | '/producteurs'
+    | '/rejoindre'
+    | '/transporteurs'
+  id:
+    | '__root__'
+    | '/'
+    | '/distribution'
+    | '/observatoire'
+    | '/producteurs'
+    | '/rejoindre'
+    | '/transporteurs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DistributionRoute: typeof DistributionRoute
+  ObservatoireRoute: typeof ObservatoireRoute
+  ProducteursRoute: typeof ProducteursRoute
+  RejoindreRoute: typeof RejoindreRoute
+  TransporteursRoute: typeof TransporteursRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/transporteurs': {
+      id: '/transporteurs'
+      path: '/transporteurs'
+      fullPath: '/transporteurs'
+      preLoaderRoute: typeof TransporteursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rejoindre': {
+      id: '/rejoindre'
+      path: '/rejoindre'
+      fullPath: '/rejoindre'
+      preLoaderRoute: typeof RejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/producteurs': {
+      id: '/producteurs'
+      path: '/producteurs'
+      fullPath: '/producteurs'
+      preLoaderRoute: typeof ProducteursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/observatoire': {
+      id: '/observatoire'
+      path: '/observatoire'
+      fullPath: '/observatoire'
+      preLoaderRoute: typeof ObservatoireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/distribution': {
+      id: '/distribution'
+      path: '/distribution'
+      fullPath: '/distribution'
+      preLoaderRoute: typeof DistributionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DistributionRoute: DistributionRoute,
+  ObservatoireRoute: ObservatoireRoute,
+  ProducteursRoute: ProducteursRoute,
+  RejoindreRoute: RejoindreRoute,
+  TransporteursRoute: TransporteursRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
