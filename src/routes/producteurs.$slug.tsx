@@ -45,19 +45,30 @@ function ProducerDetailPage() {
 
   return (
     <PageShell>
-      <section className="border-b-2 border-foreground px-6 md:px-12 py-16 md:py-20">
-        <Link to="/producteurs" className="font-mono text-[10px] uppercase tracking-widest opacity-70 hover:opacity-100">
-          ← Annuaire des producteurs
-        </Link>
-        <div className="font-mono text-xs uppercase tracking-[0.3em] text-signal mt-6 mb-4">▍ {p.zone}</div>
-        <h1 className="display text-5xl md:text-7xl">{p.name}</h1>
-        <p className="mt-6 max-w-2xl font-mono text-base text-muted-foreground">{p.description}</p>
-        <div className="mt-6 flex flex-wrap gap-1">
-          {p.categories.map((c) => (
-            <span key={c} className="border-2 border-foreground px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
-              {c}
-            </span>
-          ))}
+      <section className="border-b-2 border-foreground grid md:grid-cols-2 gap-0">
+        <div className="px-6 md:px-12 py-16 md:py-20 md:border-r-2 border-foreground">
+          <Link to="/producteurs" className="font-mono text-[10px] uppercase tracking-widest opacity-70 hover:opacity-100">
+            ← Annuaire des producteurs
+          </Link>
+          <div className="font-mono text-xs uppercase tracking-[0.3em] text-signal mt-6 mb-4">▍ {p.zone}</div>
+          <h1 className="display text-5xl md:text-6xl">{p.name}</h1>
+          <p className="mt-6 max-w-2xl font-mono text-base text-muted-foreground">{p.description}</p>
+          <div className="mt-6 flex flex-wrap gap-1">
+            {p.categories.map((c) => (
+              <span key={c} className="border-2 border-foreground px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="aspect-[4/3] md:aspect-auto overflow-hidden bg-card border-t-2 md:border-t-0 border-foreground">
+          <img
+            src={p.image}
+            alt={p.name}
+            width={1024}
+            height={768}
+            className="w-full h-full object-cover"
+          />
         </div>
       </section>
 

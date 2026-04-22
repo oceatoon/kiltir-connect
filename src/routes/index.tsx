@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-import { CATALOG } from "@/lib/mock-data";
+import { CATALOG, PRODUCT_IMAGES } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,8 +67,21 @@ function FreshDrops() {
               key={p.id}
               to="/commander/$id"
               params={{ id: p.id }}
-              className={`group p-8 border-b-2 last:border-b-0 ${borderRMd} ${borderR} ${borderB} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors`}
+              className={`group flex flex-col border-b-2 last:border-b-0 ${borderRMd} ${borderR} ${borderB} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors`}
             >
+              {PRODUCT_IMAGES[p.id] && (
+                <div className="aspect-[4/3] overflow-hidden border-b-2 border-foreground bg-card">
+                  <img
+                    src={PRODUCT_IMAGES[p.id]}
+                    alt={p.name}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
+              <div className="p-8 flex-1 flex flex-col">
               <div className="flex items-start justify-between gap-4">
                 <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">
                   {p.category}
@@ -99,6 +112,7 @@ function FreshDrops() {
               </div>
               <div className="mt-6 font-mono text-xs uppercase tracking-widest opacity-80">
                 → Commander
+              </div>
               </div>
             </Link>
           );

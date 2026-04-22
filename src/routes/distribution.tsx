@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/page-shell";
+import { PD_IMAGES } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/distribution")({
   head: () => ({
@@ -36,20 +37,34 @@ function DistributionPage() {
           {PDS.map((pd, i) => (
             <article
               key={pd.city}
-              className={`p-6 ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PDS.length - 3 ? "lg:border-b-2" : ""} ${i < PDS.length - 2 ? "border-b-2" : ""} border-foreground`}
+              className={`flex flex-col ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < PDS.length - 3 ? "lg:border-b-2" : ""} ${i < PDS.length - 2 ? "border-b-2" : ""} border-foreground`}
             >
-              <div className="flex items-start justify-between">
-                <h3 className="display text-2xl">{pd.city}</h3>
-                <span className="bg-signal text-signal-foreground px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
-                  PD{String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <p className="mt-3 font-mono text-sm">{pd.addr}</p>
-              <p className="mt-1 font-mono text-xs uppercase tracking-widest opacity-70">
-                Hôte · {pd.host}
-              </p>
-              <div className="mt-4 inline-block border border-current px-2 py-1 font-mono text-[10px] uppercase tracking-widest">
-                {pd.days}
+              {PD_IMAGES[pd.city] && (
+                <div className="aspect-[16/10] overflow-hidden border-b-2 border-foreground bg-card">
+                  <img
+                    src={PD_IMAGES[pd.city]}
+                    alt={`Point de distribution ${pd.city}`}
+                    loading="lazy"
+                    width={1024}
+                    height={640}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <div className="flex items-start justify-between">
+                  <h3 className="display text-2xl">{pd.city}</h3>
+                  <span className="bg-signal text-signal-foreground px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
+                    PD{String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <p className="mt-3 font-mono text-sm">{pd.addr}</p>
+                <p className="mt-1 font-mono text-xs uppercase tracking-widest opacity-70">
+                  Hôte · {pd.host}
+                </p>
+                <div className="mt-4 inline-block border border-current px-2 py-1 font-mono text-[10px] uppercase tracking-widest">
+                  {pd.days}
+                </div>
               </div>
             </article>
           ))}

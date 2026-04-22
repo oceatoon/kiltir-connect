@@ -1,4 +1,44 @@
 // Mock data shared across pages — frontend-only, will move to backend.
+import producerPlourin from "@/assets/producer-plourin.jpg";
+import producerKerouzy from "@/assets/producer-kerouzy.jpg";
+import producerKervern from "@/assets/producer-kervern.jpg";
+import productPommes from "@/assets/product-pommes.jpg";
+import productCidre from "@/assets/product-cidre.jpg";
+import productJus from "@/assets/product-jus.jpg";
+import productPanier from "@/assets/product-panier.jpg";
+import productOeufs from "@/assets/product-oeufs.jpg";
+import productFarine from "@/assets/product-farine.jpg";
+import productPain from "@/assets/product-pain.jpg";
+import pdBrest from "@/assets/pd-brest.jpg";
+import pdMorlaix from "@/assets/pd-morlaix.jpg";
+import pdLannion from "@/assets/pd-lannion.jpg";
+import pdCarhaix from "@/assets/pd-carhaix.jpg";
+import avatarUser from "@/assets/avatar-user.jpg";
+
+export const AVATAR_USER = avatarUser;
+
+export const PD_IMAGES: Record<string, string> = {
+  "PD Brest Centre": pdBrest,
+  "PD Morlaix Halles": pdMorlaix,
+  "PD Lannion Quai": pdLannion,
+  "PD Carhaix Forum": pdCarhaix,
+  "Brest Centre": pdBrest,
+  Morlaix: pdMorlaix,
+  Lannion: pdLannion,
+  Carhaix: pdCarhaix,
+  Quimper: pdBrest,
+  Landerneau: pdMorlaix,
+};
+
+export const PRODUCT_IMAGES: Record<string, string> = {
+  "P-001": productPommes,
+  "P-002": productCidre,
+  "P-003": productJus,
+  "P-004": productPanier,
+  "P-005": productOeufs,
+  "P-006": productFarine,
+  "P-007": productPain,
+};
 
 export type Producer = {
   slug: string;
@@ -9,6 +49,7 @@ export type Producer = {
   products: { name: string; price: string; unit: string; available: string }[];
   volume: string;
   categories: string[];
+  image: string;
 };
 
 export const PRODUCERS: Producer[] = [
@@ -25,6 +66,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "1.2 t / mois",
     categories: ["Boissons", "Maraîchage"],
+    image: producerPlourin,
   },
   {
     slug: "ferme-kerouzy",
@@ -38,6 +80,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "800 kg / mois",
     categories: ["Maraîchage", "Élevage"],
+    image: producerKerouzy,
   },
   {
     slug: "moulin-de-kervern",
@@ -51,6 +94,7 @@ export const PRODUCERS: Producer[] = [
     ],
     volume: "450 kg / mois",
     categories: ["Boulange"],
+    image: producerKervern,
   },
 ];
 

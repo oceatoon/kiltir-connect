@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageShell, PageHero } from "@/components/page-shell";
-import { CATALOG, CATEGORIES, ALL_PDS } from "@/lib/mock-data";
+import { CATALOG, CATEGORIES, ALL_PDS, PRODUCT_IMAGES } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/produits")({
   head: () => ({
@@ -49,8 +49,21 @@ function ProduitsPage() {
             return (
               <div
                 key={p.id}
-                className={`p-6 flex flex-col ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < filtered.length - (filtered.length % 3 || 3) ? "lg:border-b-2" : ""} border-foreground`}
+                className={`flex flex-col ${i % 3 !== 2 ? "lg:border-r-2" : ""} ${i % 2 === 0 ? "md:border-r-2 lg:border-r-0" : ""} ${i < filtered.length - (filtered.length % 3 || 3) ? "lg:border-b-2" : ""} border-foreground`}
               >
+                {PRODUCT_IMAGES[p.id] && (
+                  <div className="aspect-[4/3] overflow-hidden border-b-2 border-foreground bg-card">
+                    <img
+                      src={PRODUCT_IMAGES[p.id]}
+                      alt={p.name}
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-6 flex flex-col flex-1">
                 <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">
                   {p.category} · {p.id}
                 </div>
@@ -97,6 +110,7 @@ function ProduitsPage() {
                 >
                   Faire ma promesse →
                 </Link>
+                </div>
               </div>
             );
           })}
