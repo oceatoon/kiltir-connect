@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
+import { CATALOG } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
