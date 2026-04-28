@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageShell, PageHero } from "@/components/page-shell";
-import { CATALOG, CATEGORIES, ALL_PDS, PRODUCT_IMAGES } from "@/lib/mock-data";
+import { CATALOG, CATEGORIES, ALL_PDS, PRODUCT_IMAGES, type CatalogProduct } from "@/lib/mock-data";
+import { useAuth } from "@/lib/auth";
+import { QuickOrderDialog } from "@/components/quick-order-dialog";
 
 export const Route = createFileRoute("/produits")({
   head: () => ({
@@ -16,6 +18,8 @@ export const Route = createFileRoute("/produits")({
 });
 
 function ProduitsPage() {
+  const { loggedIn } = useAuth();
+  const [quickOrder, setQuickOrder] = useState<CatalogProduct | null>(null);
   const [cat, setCat] = useState<string>("Tous");
   const [pd, setPd] = useState<string>("Tous");
 
