@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { PageShell } from "@/components/page-shell";
-import { CATALOG, PRODUCT_IMAGES } from "@/lib/mock-data";
+import { CATALOG, PRODUCT_IMAGES, MOCK_ORDERS_CONSUMER, STATUS_LABEL, type CatalogProduct } from "@/lib/mock-data";
+import { useAuth } from "@/lib/auth";
+import { QuickOrderDialog } from "@/components/quick-order-dialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,16 +25,124 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { loggedIn } = useAuth();
+  const [quickOrder, setQuickOrder] = useState<CatalogProduct | null>(null);
+
   return (
     <PageShell>
+      {loggedIn && <MemberDashboard onQuickOrder={setQuickOrder} />}
       <Hero />
       <Manifesto />
       <HowItWorks />
-      <FreshDrops />
+      <FreshDrops onQuickOrder={loggedIn ? setQuickOrder : null} />
       <RolesGrid />
       <LiveStrip />
       <Cta />
+      <QuickOrderDialog product={quickOrder} onClose={() => setQuickOrder(null)} />
     </PageShell>
+  );
+}
+
+const STATUS_COLOR: Record<string, string> = {
+  promesse: "bg-signal text-signal-foreground",
+  paiement: "bg-foreground text-background",
+  livraison: "bg-card",
+  reception: "bg-background",
+  annulee: "bg-muted",
+};
+
+function MemberDashboard({ onQuickOrder }: { onQuickOrder: (p: CatalogProduct) => void }) {
+  const fresh = CATALOG.slice(0, 4);
+  const active = MOCK_ORDERS_CONSUMER.filter((o) => o.status !== "reception" && o.status !== "annulee");
+
+  return (
+    <section className="border-b-2 border-foreground bg-card">
+      <div className="px-6 md:px-12 pt-10 pb-4 flex items-end justify-between gap-6 flex-wrap">
+        <div>
+          <div className="font-mono text-xs uppercase tracking-[0.3em] text-signal mb-3">
+            ▍ Bonjour — Espace membre
+          </div>
+          <h2 className="display text-3xl md:text-5xl">
+            Frais du jour. <span className="text-signal">Commande en un clic.</span>
+          </h2>
+        </div>
+        <div className="flex gap-0">
+          <Link to="/wallet" className="border-2 border-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-widest hover:bg-signal hover:text-signal-foreground">Wallet</Link>
+          <Link to="/commandes" className="border-2 border-foreground -ml-[2px] px-4 py-2 font-mono text-[11px] uppercase tracking-widest hover:bg-signal hover:text-signal-foreground">Toutes mes commandes →</Link>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-0 border-t-2 border-foreground">
+        {/* Fresh products — 2/3 */}
+        <div className="lg:col-span-2 border-r-0 lg:border-r-2 border-foreground">
+          <div className="px-6 md:px-12 py-4 border-b-2 border-foreground font-mono text-[10px] uppercase tracking-widest opacity-70">
+            Nouveaux arrivages — promesses ouvertes
+          </div>
+          <div className="grid sm:grid-cols-2 gap-0">
+            {fresh.map((p, i) => (
+              <div
+                key={p.id}
+                className={`bg-background p-5 border-foreground ${i % 2 === 0 ? "sm:border-r-2" : ""} ${i < 2 ? "border-b-2" : ""}`}
+              >
+                <div className="flex gap-4">
+                  {PRODUCT_IMAGES[p.id] && (
+                    <img src={PRODUCT_IMAGES[p.id]} alt={p.name} loading="lazy" className="w-20 h-20 object-cover border-2 border-foreground" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">{p.category}</div>
+                    <h3 className="display text-xl leading-tight truncate">{p.name}</h3>
+                    <div className="font-mono text-[11px] opacity-70 truncate">{p.producerName}</div>
+                    <div className="display text-2xl mt-1">
+                      {p.price.toFixed(2)}<span className="text-xs ml-1">€/{p.unit}</span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => onQuickOrder(p)}
+                  className="mt-4 w-full bg-foreground text-background border-2 border-foreground px-3 py-2 font-mono text-[11px] uppercase tracking-widest hover:bg-signal hover:text-signal-foreground transition-colors"
+                >
+                  Commander → {p.available} {p.unit} restants
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Active orders — 1/3 */}
+        <div className="bg-background">
+          <div className="px-6 py-4 border-b-2 border-t-2 lg:border-t-0 border-foreground font-mono text-[10px] uppercase tracking-widest opacity-70">
+            Mes commandes en cours ({active.length})
+          </div>
+          <ul className="divide-y-2 divide-foreground">
+            {active.map((o) => (
+              <li key={o.id} className="px-6 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">{o.id}</div>
+                  <span className={`font-mono text-[10px] uppercase tracking-widest border-2 border-foreground px-2 py-0.5 ${STATUS_COLOR[o.status]}`}>
+                    {STATUS_LABEL[o.status]}
+                  </span>
+                </div>
+                <div className="display text-lg mt-1 leading-tight">{o.counterparty}</div>
+                <div className="font-mono text-xs opacity-80 truncate">{o.items}</div>
+                <div className="flex items-center justify-between mt-2 font-mono text-xs">
+                  <span className="opacity-70">{o.date}</span>
+                  <span className="display text-base">{o.amount.toFixed(2)} €</span>
+                </div>
+              </li>
+            ))}
+            {active.length === 0 && (
+              <li className="px-6 py-8 font-mono text-xs opacity-70">Aucune commande en cours.</li>
+            )}
+          </ul>
+          <Link
+            to="/commandes"
+            className="block text-center border-t-2 border-foreground px-6 py-3 font-mono text-[11px] uppercase tracking-widest hover:bg-signal hover:text-signal-foreground"
+          >
+            Voir tout l'historique →
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 
