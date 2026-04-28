@@ -114,7 +114,27 @@ function ProduitsPage() {
                 >
                   Faire ma promesse →
                 </Link>
+                {loggedIn && (
+                  <button
+                    onClick={() => setQuickOrder(p)}
+                    className="mt-2 inline-block text-center bg-signal text-signal-foreground border-2 border-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
+                  >
+                    ⚡ Commande rapide
+                  </button>
+                )}
                 </div>
+              </div>
+            );
+          })}
+          {filtered.length === 0 && (
+            <div className="p-12 font-mono text-sm">Aucun produit pour ces filtres.</div>
+          )}
+        </div>
+      </section>
+      <QuickOrderDialog product={quickOrder} onClose={() => setQuickOrder(null)} />
+    </PageShell>
+  );
+}
               </div>
             );
           })}
