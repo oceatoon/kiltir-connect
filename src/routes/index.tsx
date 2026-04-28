@@ -146,7 +146,7 @@ function MemberDashboard({ onQuickOrder }: { onQuickOrder: (p: CatalogProduct) =
   );
 }
 
-function FreshDrops() {
+function FreshDrops({ onQuickOrder }: { onQuickOrder: ((p: CatalogProduct) => void) | null }) {
   const items = CATALOG.slice(0, 6);
   return (
     <section className="border-b-2 border-foreground">
@@ -222,9 +222,22 @@ function FreshDrops() {
                 />
               </div>
               <div className="mt-6 font-mono text-xs uppercase tracking-widest opacity-80">
-                → Commander
+                → Voir le détail
               </div>
               </div>
+            </Link>
+            {onQuickOrder && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onQuickOrder(p);
+                }}
+                className={`-mt-[2px] ${borderRMd} ${borderR} ${borderB} border-b-2 border-foreground bg-signal text-signal-foreground px-4 py-3 font-mono text-[11px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors text-left`}
+              >
+                ⚡ Commande rapide →
+              </button>
+            )}
+          </div>
             </Link>
           );
         })}
