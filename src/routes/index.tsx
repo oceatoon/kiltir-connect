@@ -174,11 +174,11 @@ function FreshDrops({ onQuickOrder }: { onQuickOrder: ((p: CatalogProduct) => vo
           const borderRMd = i % 2 === 0 ? "md:border-r-2" : "";
           const borderB = i < items.length - (items.length % 3 || 3) ? "lg:border-b-2" : "";
           return (
+            <div key={p.id} className={`flex flex-col border-b-2 last:border-b-0 ${borderRMd} ${borderR} ${borderB} border-foreground`}>
             <Link
-              key={p.id}
               to="/commander/$id"
               params={{ id: p.id }}
-              className={`group flex flex-col border-b-2 last:border-b-0 ${borderRMd} ${borderR} ${borderB} border-foreground hover:bg-signal hover:text-signal-foreground transition-colors`}
+              className="group flex flex-col flex-1 hover:bg-signal hover:text-signal-foreground transition-colors"
             >
               {PRODUCT_IMAGES[p.id] && (
                 <div className="aspect-[4/3] overflow-hidden border-b-2 border-foreground bg-card">
@@ -228,17 +228,13 @@ function FreshDrops({ onQuickOrder }: { onQuickOrder: ((p: CatalogProduct) => vo
             </Link>
             {onQuickOrder && (
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  onQuickOrder(p);
-                }}
-                className={`-mt-[2px] ${borderRMd} ${borderR} ${borderB} border-b-2 border-foreground bg-signal text-signal-foreground px-4 py-3 font-mono text-[11px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors text-left`}
+                onClick={() => onQuickOrder(p)}
+                className="border-t-2 border-foreground bg-signal text-signal-foreground px-4 py-3 font-mono text-[11px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors text-left"
               >
                 ⚡ Commande rapide →
               </button>
             )}
-          </div>
-            </Link>
+            </div>
           );
         })}
       </div>
