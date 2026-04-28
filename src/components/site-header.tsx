@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useAuth } from "@/lib/auth";
 
 const NAV = [
   { to: "/", label: "Accueil" },
@@ -15,6 +16,7 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { loggedIn, login, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background">
@@ -38,12 +40,21 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Link
-            to="/rejoindre"
-            className="border-l-2 border-foreground bg-foreground px-6 py-4 text-xs font-mono uppercase tracking-widest text-background hover:bg-signal hover:text-signal-foreground transition-colors"
-          >
-            Rejoindre →
-          </Link>
+          {loggedIn ? (
+            <button
+              onClick={logout}
+              className="border-l-2 border-foreground bg-foreground px-6 py-4 text-xs font-mono uppercase tracking-widest text-background hover:bg-signal hover:text-signal-foreground transition-colors"
+            >
+              Déconnexion
+            </button>
+          ) : (
+            <button
+              onClick={login}
+              className="border-l-2 border-foreground bg-foreground px-6 py-4 text-xs font-mono uppercase tracking-widest text-background hover:bg-signal hover:text-signal-foreground transition-colors"
+            >
+              Connexion (démo) →
+            </button>
+          )}
         </nav>
 
         <button

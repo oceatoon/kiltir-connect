@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageShell, PageHero } from "@/components/page-shell";
-import { CATALOG, CATEGORIES, ALL_PDS, PRODUCT_IMAGES } from "@/lib/mock-data";
+import { CATALOG, CATEGORIES, ALL_PDS, PRODUCT_IMAGES, type CatalogProduct } from "@/lib/mock-data";
+import { useAuth } from "@/lib/auth";
+import { QuickOrderDialog } from "@/components/quick-order-dialog";
 
 export const Route = createFileRoute("/produits")({
   head: () => ({
@@ -16,6 +18,8 @@ export const Route = createFileRoute("/produits")({
 });
 
 function ProduitsPage() {
+  const { loggedIn } = useAuth();
+  const [quickOrder, setQuickOrder] = useState<CatalogProduct | null>(null);
   const [cat, setCat] = useState<string>("Tous");
   const [pd, setPd] = useState<string>("Tous");
 
@@ -110,6 +114,14 @@ function ProduitsPage() {
                 >
                   Faire ma promesse →
                 </Link>
+                {loggedIn && (
+                  <button
+                    onClick={() => setQuickOrder(p)}
+                    className="mt-2 inline-block text-center bg-signal text-signal-foreground border-2 border-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
+                  >
+                    ⚡ Commande rapide
+                  </button>
+                )}
                 </div>
               </div>
             );
@@ -119,6 +131,7 @@ function ProduitsPage() {
           )}
         </div>
       </section>
+      <QuickOrderDialog product={quickOrder} onClose={() => setQuickOrder(null)} />
     </PageShell>
   );
 }
