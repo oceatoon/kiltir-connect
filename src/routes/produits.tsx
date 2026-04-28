@@ -135,17 +135,6 @@ function ProduitsPage() {
     </PageShell>
   );
 }
-              </div>
-            );
-          })}
-          {filtered.length === 0 && (
-            <div className="p-12 font-mono text-sm">Aucun produit pour ces filtres.</div>
-          )}
-        </div>
-      </section>
-    </PageShell>
-  );
-}
 
 function FilterRow({
   label,
