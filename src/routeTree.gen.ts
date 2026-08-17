@@ -15,6 +15,7 @@ import { Route as RejoindreRouteImport } from './routes/rejoindre'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ProducteursRouteImport } from './routes/producteurs'
+import { Route as PresentationRouteImport } from './routes/presentation'
 import { Route as ObservatoireRouteImport } from './routes/observatoire'
 import { Route as DistributionRouteImport } from './routes/distribution'
 import { Route as CommandesRouteImport } from './routes/commandes'
@@ -51,6 +52,11 @@ const ProduitsRoute = ProduitsRouteImport.update({
 const ProducteursRoute = ProducteursRouteImport.update({
   id: '/producteurs',
   path: '/producteurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresentationRoute = PresentationRouteImport.update({
+  id: '/presentation',
+  path: '/presentation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ObservatoireRoute = ObservatoireRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
+  '/presentation': typeof PresentationRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
   '/profil': typeof ProfilRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
+  '/presentation': typeof PresentationRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
   '/profil': typeof ProfilRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/commandes': typeof CommandesRoute
   '/distribution': typeof DistributionRoute
   '/observatoire': typeof ObservatoireRoute
+  '/presentation': typeof PresentationRoute
   '/producteurs': typeof ProducteursRouteWithChildren
   '/produits': typeof ProduitsRouteWithChildren
   '/profil': typeof ProfilRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/distribution'
     | '/observatoire'
+    | '/presentation'
     | '/producteurs'
     | '/produits'
     | '/profil'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/distribution'
     | '/observatoire'
+    | '/presentation'
     | '/producteurs'
     | '/produits'
     | '/profil'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/distribution'
     | '/observatoire'
+    | '/presentation'
     | '/producteurs'
     | '/produits'
     | '/profil'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   CommandesRoute: typeof CommandesRoute
   DistributionRoute: typeof DistributionRoute
   ObservatoireRoute: typeof ObservatoireRoute
+  PresentationRoute: typeof PresentationRoute
   ProducteursRoute: typeof ProducteursRouteWithChildren
   ProduitsRoute: typeof ProduitsRouteWithChildren
   ProfilRoute: typeof ProfilRoute
@@ -239,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/producteurs'
       fullPath: '/producteurs'
       preLoaderRoute: typeof ProducteursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/presentation': {
+      id: '/presentation'
+      path: '/presentation'
+      fullPath: '/presentation'
+      preLoaderRoute: typeof PresentationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/observatoire': {
@@ -322,6 +342,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommandesRoute: CommandesRoute,
   DistributionRoute: DistributionRoute,
   ObservatoireRoute: ObservatoireRoute,
+  PresentationRoute: PresentationRoute,
   ProducteursRoute: ProducteursRouteWithChildren,
   ProduitsRoute: ProduitsRouteWithChildren,
   ProfilRoute: ProfilRoute,
