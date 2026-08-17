@@ -106,7 +106,7 @@ function SlideCover() {
           ["0", "Intermédiaire spéculatif"],
           ["100%", "Local & traçable"],
         ].map(([k, l], i) => (
-          <div key={l} className={`p-5 border-foreground ${i < 3 ? "border-r-2" : ""} [&:nth-child(2n)]:bg-card`}>
+          <div key={l} className={`p-5 border-foreground ${i % 2 === 0 ? "border-r-2" : ""} ${i < 2 ? "border-b-2 md:border-b-0" : ""} ${i < 3 ? "md:border-r-2" : ""} [&:nth-child(2n)]:bg-card`}>
             <div className="display text-3xl md:text-5xl text-signal">{k}</div>
             <div className="mt-2 font-mono text-[10px] uppercase tracking-widest">{l}</div>
           </div>
